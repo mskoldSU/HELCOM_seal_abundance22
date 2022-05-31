@@ -205,7 +205,27 @@ grid <- st_make_grid(ringed_spatial, cellsize = 10000) %>%
   mutate(id = 1:n()) %>% 
   rowwise() %>% 
   mutate(center = st_centroid(geometry))
+st_write(grid, "grid_shapefiles/grid_SWEREF99.shp")
 ```
+
+    ## Warning in clean_columns(as.data.frame(obj), factorsAsCharacter): Dropping
+    ## column(s) center of class(es) sfc_POINT;sfc
+
+    ## Writing layer `grid_SWEREF99' to data source 
+    ##   `grid_shapefiles/grid_SWEREF99.shp' using driver `ESRI Shapefile'
+    ## Writing 620 features with 1 fields and geometry type Polygon.
+
+``` r
+grid %>% st_transform(crs = "+proj=longlat +datum=WGS84") %>% 
+  st_write("grid_shapefiles/grid_WGS84.shp")
+```
+
+    ## Warning in clean_columns(as.data.frame(obj), factorsAsCharacter): Dropping
+    ## column(s) center of class(es) sfc_POINT;sfc
+
+    ## Writing layer `grid_WGS84' to data source 
+    ##   `grid_shapefiles/grid_WGS84.shp' using driver `ESRI Shapefile'
+    ## Writing 620 features with 1 fields and geometry type Polygon.
 
 ``` r
 ggplot() + geom_sf(data = ringed_spatial, aes(geometry = geometry)) + 
